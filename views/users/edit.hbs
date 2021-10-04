@@ -1,0 +1,52 @@
+<div class="row bg-light">
+    <div class="col-lg-2 col-md-2 col-sm-3" style="border-right: solid 1px; ">
+        <nav class="pt-5">
+            <li class="row">
+                <a class="text-center" href="/user/index">
+                    <h5>Users</h5>
+                </a>
+            </li>
+            {{!-- <li class="row">
+                <a class="text-center" href="/ledger/index">
+                    <h5>Accounts</h5>
+                </a>
+            </li> --}}
+    </div>
+    </nav>
+    <div class="col-md-9 p-3 mt-5">
+        <h3>
+            {{viewTitle}}
+        </h3>
+        <form method="POST" action="/user/update" autocomplete="form">
+            <input type="hidden" name="id" value="{{users.id}}" class="form-control">
+
+            <div class="form-group">
+                <label> Full Name</label>
+                <input type="text" class="form-control" name="fullName" value="{{users.fullName}}" placeholder="Name">
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="text" class="form-control" name="email" placeholder="Email" value="{{users.email}}">
+            </div>
+
+            <div class="form-group">
+                <label>Mobile</label>
+                <input type="text" class="form-control" name="mobile" placeholder="Mobile" value="{{users.mobile}}">
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" name="password" placeholder="password"
+                    value="{{users.password}}">
+            </div>
+
+            <div class="form-group mt-2">
+                <button class="btn btn-primary" type="submit" value="submit"> <i class="fa fa-database"> </i>&nbsp;
+                    Update </button>
+                <a class="btn btn-secondary" href="/user/index" type="button"> <i class="fa fa-list-alt"> </i>&nbsp;
+                    View All </a>
+            </div>
+        </form>
+    </div>
+</div>

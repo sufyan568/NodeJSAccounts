@@ -1,0 +1,39 @@
+<h3><a class="btn btn-primary"  href="/post/post"><i class="fa fa-plus" aria-hidden="true"> Create New</i></a>
+{{viewTitle}}
+</h3>
+
+<div style="overflow-scroll">
+<table class="table">
+<thead>
+<tr>
+<th>Full Name</th>
+<th>Email</th>
+<th>Mobile</th>
+<th>City</th>
+<th></th>
+<th></th>
+
+</tr>
+</thead>
+
+<tbody>
+{{#each list}}
+<tr>
+<td>{{this.fullName}}</td>
+<td>{{this.email}}</td>
+<td>{{this.mobile}}</td>
+<td>{{this.city}}</td>
+<td>
+<a href="/post/edit/{{this.id}}"><i class="fa fa-pencil-square-o" aria-hidden="true">E</i></a>
+</td>
+<td>
+<a href="/post/delete/{{this.id}}"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+</td>
+</tr>
+{{/each}}
+
+</tbody>
+
+</table>
+
+</div>

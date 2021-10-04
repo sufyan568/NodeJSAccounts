@@ -1,0 +1,42 @@
+<div class="row bg-light">
+    <div class="col-lg-2 col-md-2 col-sm-3" style="border-right: solid 1px; ">
+        <nav class="pt-5">
+            <li class="row">
+                <a class="text-center" href="/user/index">
+                    <h5>Users</h5>
+                </a>
+            </li>
+            {{!-- <li class="row">
+                <a class="text-center" href="/ledger/index">
+                    <h5>Accounts</h5>
+                </a>
+            </li> --}}
+    </div>
+    </nav>
+    <div class="col-md-9 p-3 mt-5">
+        <h3>
+         {{viewTitle}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; {{balance}}
+        </h3>
+        <form method="POST" action="/ledger/storeCredit" autocomplete="form">
+            <div class="form-group" style='display:none;'>
+                <label> User_id</label>
+                <input type="hidden" class="form-control" value={{id}} name="user_id" placeholder="user_id">
+            </div>
+
+
+            <div class="form-group">
+                <label>Credit</label>
+                <input type="number" class="form-control" required="required" name="credit" placeholder="credit">
+            </div>
+
+
+            <div class="form-group mt-2">
+                <button class="btn btn-primary" type="submit" value="submit"> <i class="fa fa-database"> </i>&nbsp;
+                    Create </button>
+                <a class="btn btn-secondary" href="/ledger/details/{{id}}" type="button"> <i class="fa fa-list-alt"> </i>&nbsp;
+                    View All </a>
+            </div>
+        </form>
+
+    </div>
+</div>

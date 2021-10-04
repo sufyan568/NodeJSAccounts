@@ -1,0 +1,58 @@
+<div class="row bg-light">
+    <a class="text-center" href="/admin/login">
+        logout
+    </a>
+</div>
+
+<div class="row bg-light">
+
+    <div class="col-lg-2 col-md-2 col-sm-3" style="border-right: solid 1px; ">
+        <nav class="pt-5">
+            <li class="row">
+                <a class="text-center" href="/user/index">
+                    <h5>Users</h5>
+                </a>
+            </li>
+            {{!-- <li class="row">
+                <a class="text-center" href="/ledger/index">
+                    <h5>Accounts</h5>
+                </a>
+            </li> --}}
+    </div>
+    </nav>
+    <div class="col-md-9 p-3 mt-5">
+        <h3><a class="btn btn-primary" href="/user/create"><i class="fa fa-plus" aria-hidden="true"> Create New</i></a>
+            {{viewTitle}}
+        </h3>
+        <div style="overflow-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Mobile</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each list}}
+                    <tr>
+                        <td>
+                            <a href="/ledger/details/{{this.id}}">{{this.fullName}}</a>
+                        </td>
+                        <td>{{this.email}}</td>
+                        <td>{{this.mobile}}</td>
+                        <td>
+                            <a href="/user/edit/{{this.id}}"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                        <td>
+                            <a href="/user/delete/{{this.id}}"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

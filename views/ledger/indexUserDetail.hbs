@@ -1,0 +1,72 @@
+<div class="row bg-light">
+    <a class="text-center" href="/admin/login">
+        Logout
+    </a>
+</div>
+<div class="row bg-light">
+    <div class="col-lg-2 col-md-2 col-sm-3" style="border-right: solid 1px; ">
+
+        <nav class="pt-5">
+            <li class="row">
+                {{#if role}}
+                <a class="text-center" href="/user/index">
+                    <h5>Users</h5>
+                </a>
+                {{/if}}
+            </li>
+
+        </nav>
+        </div>
+        <div class="col-md-9 p-3 mt-5">
+            <h3 class="text-center">
+                 {{#if role}}
+                <a class="btn btn-primary" href="/ledger/createCredit/{{user_id}}"><i class="fa fa-plus"
+                        aria-hidden="true">
+                        Credit</i></a>
+                <a class="btn btn-primary" href="/ledger/createDebit/{{user_id}}"><i class="fa fa-minus"
+                        aria-hidden="true">
+                        Debit</i></a>
+                {{/if}}
+
+                {{viewTitle}}
+            </h3>
+
+            <div style="overflow-scroll">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Credit</th>
+                            <th>Debit</th>
+                            <th>Balance</th>
+                            <th>Datetime</th>
+                            {{!-- <th>edit</th>
+                            <th>delete</th> --}}
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {{#each list}}
+                        <tr>
+                            <td>{{this.fullName}}</td>
+                            <td>{{this.credit}}</td>
+                            <td>{{this.debit}}</td>
+                            <td>{{this.balance}}</td>
+                            <td>{{this.datetime}}</td>
+                            {{!-- <td>
+                                <a href="/ledger/edit/{{this.id}}"><i class="fas fa-pencil-alt"></i></a>
+                            </td>
+                            <td>
+                                <a href="/ledger/delete/{{this.id}}"><i class="fa fa-trash fa-lg"
+                                        aria-hidden="true"></i></a>
+                            </td> --}}
+                        </tr>
+                        {{/each}}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>

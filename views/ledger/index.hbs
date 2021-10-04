@@ -1,0 +1,65 @@
+<div class="row bg-light">
+    <a class="text-center" href="/admin/login">
+        login
+    </a>
+</div>
+<div class="row bg-light">
+    <div class="col-lg-2 col-md-2 col-sm-3">
+        <nav class="pt-5">
+            <li class="row">
+                <a class="text-center" href="/user/index">
+                    <h5>Users</h5>
+                </a>
+            </li>
+            {{!-- <li class="row">
+                <a class="text-center" href="/ledger/index">
+                    <h5>Accounts</h5>
+                </a>
+            </li> --}}
+    </div>
+    </nav>
+    <div class="col-md-9 p-3 mt-5">
+        <h3 class="text-center">
+            {{viewTitle}}
+        </h3>
+
+        <div style="overflow-scroll">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Credit</th>
+                        <th>Debit</th>
+                        <th>Balance</th>
+                        <th>Datetime</th>
+                        {{!-- <th>credit</th>
+                        <th>debit</th> --}}
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {{#each list}}
+                    <tr>
+                        <td>{{this.fullName}}</td>
+                        <td>{{this.credit}}</td>
+                        <td>{{this.debit}}</td>
+                        <td>{{this.balance}}</td>
+                        <td>{{this.datetime}}</td>
+                        {{!-- <td>
+                            <a href="/ledger/edit/{{this.id}}"><i class="fas fa-pencil-alt"></i></a>
+                        </td>
+                        <td>
+                            <a href="/ledger/delete/{{this.id}}"><i class="fa fa-trash fa-lg"
+                                    aria-hidden="true"></i></a>
+                        </td> --}}
+                    </tr>
+                    {{/each}}
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+</div>
