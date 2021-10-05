@@ -10,16 +10,24 @@ const postController=require('./controller/postController');
 const UserController=require('./controller/UserController');
 const LedgerController=require('./controller/LedgerController');
 const AdminController=require('./controller/AdminController');
+const ImporterController=require('./controller/ImporterController');
+
+const passport = require('passport');
 
 var app = express();
 
-app.use(bodyParser.urlencoded({
+app.use(express.urlencoded({
     extended:true
 }));
-app.use(bodyParser.json());
+
+app.use(express.json());
 
 app.set('views',path.join(__dirname,'./views/'));
 
+// app.use(passport.initialize());
+// app.use(passport.session());
+
+// app.use(flash());
 
 app.engine('hbs',exphbs({
     extname:'hbs',
@@ -36,3 +44,4 @@ app.use('/post',postController);
 app.use('/user',UserController);
 app.use('/ledger',LedgerController);
 app.use('/admin',AdminController);
+app.use('/importer',ImporterController);

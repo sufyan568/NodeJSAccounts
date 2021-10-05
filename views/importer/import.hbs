@@ -1,0 +1,37 @@
+<div class="row bg-light">
+    <div class="col-lg-2 col-md-2 col-sm-3" style="border-right: solid 1px; ">
+        <nav class="pt-5">
+            <li class="row">
+                <a class="text-center" href="/user/index">
+                    <h5>Users</h5>
+                </a>
+            </li>
+              <li class="row">
+                <a class="text-center" href="/importer/create">
+                    <h5>Importer</h5>
+                </a>
+            </li>
+            {{!-- <li class="row">
+                <a class="text-center" href="/ledger/index">
+                    <h5>Accounts</h5>
+                </a>
+            </li> --}}
+    </div>
+    </nav>
+    <div class="col-md-9 p-3 mt-5">
+        <h3>
+            {{viewTitle}}
+        </h3>
+        <form method="POST" action="/importer/store" enctype="multipart/form-data" autocomplete="form">
+            <div class="form-group">
+                <label>File</label>
+                <input type="file" class="form-control" name="fileimport" required='required' placeholder="file Importer">
+            </div>
+            <div class="form-group mt-2">
+                <button class="btn btn-primary" type="submit" value="submit"> <i class="fa fa-database"> </i>&nbsp;
+                    Upload </button>
+              
+            </div>
+        </form>
+    </div>
+</div>
