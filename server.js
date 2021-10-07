@@ -10,7 +10,7 @@ const postController=require('./controller/postController');
 const UserController=require('./controller/UserController');
 const LedgerController=require('./controller/LedgerController');
 const AdminController=require('./controller/AdminController');
-const ImporterController=require('./controller/ImporterController');
+// const ImporterController=require('./controller/ImporterController');
 
 const passport = require('passport');
 
@@ -44,4 +44,4 @@ app.use('/post',postController);
 app.use('/user',UserController);
 app.use('/ledger',LedgerController);
 app.use('/admin',AdminController);
-app.use('/importer',ImporterController);
+// app.use('/importer',ImporterController);

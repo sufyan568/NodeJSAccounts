@@ -22,6 +22,7 @@ router.post('/store',(req,res)=>{
     var mobiles=req.body.mobile;
     var password=req.body.password;
     var role=req.body.role;
+    console.log(req.body);
     var ledgerQuery="SELECT `email`  FROM `users` WHERE `email` = '" + emails + "' ORDER BY `id` DESC LIMIT 1";
     // console.log(ledgerQuery);
     balanceLedger=db.query(ledgerQuery, (err ,data) => {

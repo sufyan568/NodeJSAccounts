@@ -93,23 +93,38 @@ router.get('/delete/:id', (req, res) => {
 //view unique user ledger route
 router.get('/details/:id', (req, res) => {
     var id = req.params.id;
-    var UserDetails = 'SELECT fullName,credit,debit,balance,datetime,ledger.id,role FROM ledger JOIN users ON ledger.user_id = users.id WHERE user_id = '+ id;
+    var UserDetails = 'SELECT fullName,credit,debit,balance,datetime,ledger.id,role FROM ledger JOIN users ON ledger.user_id = users.id WHERE user_id = ' + id;
     var type = '';
-    db.query(UserDetails,  function (err, data, fields) {
-        console.log(data);
-        if(data[0].role == 'Admin'){
-             type = 'Admin' ;
+    db.query(UserDetails, function (err, data, fields) {
+        console.log(data[0]);
+       if ((typeof data[0] === 'undefined') ) {
+            var UserDetails = 'SELECT * FROM users WHERE id = ' + id;
+            db.query(UserDetails, function (err, data, fields) {
+                if (data[0].role == 'Admin') {
+                    type = 'Admin';
+                }
+                else {
+                    type = null;
+                }
+            });
+          
         }
-        else
-        {
-             type = null;
-        }
-        res.render("ledger/indexUserDetail", {
-            viewTitle: "View Single User Account Details",
-            list: data,
-            user_id: id,
-            role:type,
-        });
+        else {
+
+            if (data[0].role == 'Admin') {
+                type = 'Admin';
+            }
+            else {
+                type = null;
+            }
+          }
+            res.render("ledger/indexUserDetail", {
+                viewTitle: "View Single User Account Details",
+                list: data,
+                user_id: id,
+                role: type,
+            });
+        
     });
 });
 
@@ -138,111 +153,111 @@ router.get('/createCredit/:id', (req, res) => {
 
         }
     });
-    
+
 });
 
-    //create unique user credit ledger route
-    router.get('/createDebit/:id', (req, res) => {
-        var id = req.params.id;
-        var ledgerQuery = 'SELECT `balance`  FROM `ledger` WHERE `user_id` = ' + id + ' ORDER BY `id` DESC LIMIT 1';
-        db.query(ledgerQuery, (err, data) => {
-            // console.log(data);
-            if (err) throw err;
-            else if ((typeof data[0] !== "undefined") && (data[0].hasOwnProperty('balance'))) {
+//create unique user credit ledger route
+router.get('/createDebit/:id', (req, res) => {
+    var id = req.params.id;
+    var ledgerQuery = 'SELECT `balance`  FROM `ledger` WHERE `user_id` = ' + id + ' ORDER BY `id` DESC LIMIT 1';
+    db.query(ledgerQuery, (err, data) => {
+        // console.log(data);
+        if (err) throw err;
+        else if ((typeof data[0] !== "undefined") && (data[0].hasOwnProperty('balance'))) {
 
-                res.render("ledger/createDebit", {
-                    viewTitle: "Balance Debit",
-                    balance: "User Current Balance : " + data[0].balance,
-                    id: id,
-                });
+            res.render("ledger/createDebit", {
+                viewTitle: "Balance Debit",
+                balance: "User Current Balance : " + data[0].balance,
+                id: id,
+            });
 
-            }
-            else {
+        }
+        else {
 
-                res.render("ledger/createDebit", {
-                    viewTitle: "Balance Debit the User",
-                    balance: "Current Balance" + 0,
-                    id: id,
-                });
+            res.render("ledger/createDebit", {
+                viewTitle: "Balance Debit the User",
+                balance: "Current Balance" + 0,
+                id: id,
+            });
 
-            }
-        });
+        }
     });
+});
 
-    //Insert Credit Balance Record
-    router.post('/storeCredit', (req, res) => {
-        var data = insertCreditLedger(req, res);
+//Insert Credit Balance Record
+router.post('/storeCredit', (req, res) => {
+    var data = insertCreditLedger(req, res);
+});
+
+function insertCreditLedger(req, res) {
+    var user_id = req.body.user_id;
+    var credit = req.body.credit;
+    var debit = req.body.debit;
+    var balance = credit - debit;
+    var balanceLedger = 0;
+    var updateBalance = 0;
+    var ledgerQuery = 'SELECT `balance`  FROM `ledger` WHERE `user_id` = ' + user_id + ' ORDER BY `id` DESC LIMIT 1';
+    balanceLedger = db.query(ledgerQuery, (err, data) => {
+        if (err) throw err;
+        else if ((typeof data[0] !== "undefined") && (data[0].hasOwnProperty('balance'))) {
+            updateBalance = parseInt(data[0].balance) + parseInt(credit);
+            db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
+                if (err) throw err;
+                else {
+                    res.redirect('../ledger/details/' + user_id);
+                }
+            });
+        }
+        else {
+            updateBalance = 0 + parseInt(credit);
+            db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
+                if (err) throw err;
+                else {
+                    res.redirect('../ledger/details/' + user_id);
+                }
+            });
+        }
     });
+    // console.log(ledgerQuery, updateBalance);
 
-    function insertCreditLedger(req, res) {
-        var user_id = req.body.user_id;
-        var credit = req.body.credit;
-        var debit = req.body.debit;
-        var balance = credit - debit;
-        var balanceLedger = 0;
-        var updateBalance = 0;
-        var ledgerQuery = 'SELECT `balance`  FROM `ledger` WHERE `user_id` = ' + user_id + ' ORDER BY `id` DESC LIMIT 1';
-        balanceLedger = db.query(ledgerQuery, (err, data) => {
-            if (err) throw err;
-            else if ((typeof data[0] !== "undefined") && (data[0].hasOwnProperty('balance'))) {
-                updateBalance = parseInt(data[0].balance) + parseInt(credit);
-                db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
-                    if (err) throw err;
-                    else {
-                        res.redirect('../ledger/details/' + user_id);
-                    }
-                });
-            }
-            else {
-                updateBalance = 0 + parseInt(credit);
-                db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
-                    if (err) throw err;
-                    else {
-                        res.redirect('../ledger/details/' + user_id);
-                    }
-                });
-            }
-        });
-        // console.log(ledgerQuery, updateBalance);
+}
+//Insert Credit Balance Record
+router.post('/storeDebit', (req, res) => {
+    var data = insertDebitLedger(req, res);
+});
 
-    }
-    //Insert Credit Balance Record
-    router.post('/storeDebit', (req, res) => {
-        var data = insertDebitLedger(req, res);
+function insertDebitLedger(req, res) {
+    var user_id = req.body.user_id;
+    var credit = req.body.credit;
+    var debit = req.body.debit;
+    var balance = credit - debit;
+    var balanceLedger = 0;
+    var updateBalance = 0;
+    var ledgerQuery = 'SELECT `balance`  FROM `ledger` WHERE `user_id` = ' + user_id + ' ORDER BY `id` DESC LIMIT 1';
+    balanceLedger = db.query(ledgerQuery, (err, data) => {
+        if (err) throw err;
+        else if ((typeof data[0] !== "undefined") && (data[0].hasOwnProperty('balance'))) {
+            updateBalance = parseInt(data[0].balance) - parseInt(debit);
+            db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
+                if (err) throw err;
+                else {
+                    res.redirect('../ledger/details/' + user_id);
+                }
+            });
+        }
+        else {
+            updateBalance = 0 - parseInt(debit);
+            db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
+                if (err) throw err;
+                else {
+                    res.redirect('../ledger/details/' + user_id);
+                }
+            });
+        }
+
     });
+    // console.log(ledgerQuery, updateBalance);
 
-    function insertDebitLedger(req, res) {
-        var user_id = req.body.user_id;
-        var credit = req.body.credit;
-        var debit = req.body.debit;
-        var balance = credit - debit;
-        var balanceLedger = 0;
-        var updateBalance = 0;
-        var ledgerQuery = 'SELECT `balance`  FROM `ledger` WHERE `user_id` = ' + user_id + ' ORDER BY `id` DESC LIMIT 1';
-        balanceLedger = db.query(ledgerQuery, (err, data) => {
-            if (err) throw err;
-            else if ((typeof data[0] !== "undefined") && (data[0].hasOwnProperty('balance'))) {
-                updateBalance = parseInt(data[0].balance) - parseInt(debit);
-                db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
-                    if (err) throw err;
-                    else {
-                        res.redirect('../ledger/details/' + user_id);
-                    }
-                });
-            }
-            else {
-                updateBalance = 0 - parseInt(debit);
-                db.query(`INSERT INTO ledger (user_id,credit,debit,balance) VALUES ('${user_id}','${credit}','${debit}','${updateBalance}')`, function (err, result) {
-                    if (err) throw err;
-                    else {
-                        res.redirect('../ledger/details/' + user_id);
-                    }
-                });
-            }
+}
 
-        });
-        // console.log(ledgerQuery, updateBalance);
-
-    }
-
-    module.exports = router;
+module.exports = router;
