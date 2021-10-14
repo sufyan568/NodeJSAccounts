@@ -25,14 +25,14 @@ var conn = mysql.createConnection({
     database: "onecall_nodeJsCrud"
 });
 conn.connect(function(err) {
-    if (err) throw err;
-    console.log('Database is connected successfully !');
-    // if (!err){
-    //     console.log('Connection Created Successfully');
-    // }
-    // else {
-    //     console.log('Error in Database Connection: '+ error);
-    // }
+    // if (err) throw err;
+    // console.log('Database is connected successfully !');
+    if (!err){
+        console.log('Connection Created Successfully');
+    }
+    else {
+        console.log('Error in Database Connection: '+ error);
+    }
 });
 require('./post.model');
 

@@ -40,8 +40,15 @@ app.listen(3000 ,() =>{
     // console.log('Express Server is Started at port : 3000');
 });
 
+
+
 app.use('/post',postController);
 app.use('/user',UserController);
 app.use('/ledger',LedgerController);
 app.use('/admin',AdminController);
 // app.use('/importer',ImporterController);
+
+app.use((req,res,next)=>{
+    res.status(404).render('404',{pageTitle : '404 Route Not Found'});
+    
+});
